@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "0NeEpIIfP2EYggSXRYMmyCLIsDg=",
+			"path": "github.com/rakyll/statik/fs",
+			"revision": "f01099287521e194132d13ad90aceb8fce861e65",
+			"revisionTime": "2018-03-28T07:19:30Z"
+		}
+	],
+	"rootPath": "github.com/krishnasrinivas/vmware-app"
+}
