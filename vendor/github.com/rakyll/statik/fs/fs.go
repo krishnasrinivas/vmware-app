@@ -21,10 +21,14 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"os"
 	"strings"
 
+	"syscall"
+
+	humanize "github.com/dustin/go-humanize"
 	"github.com/hoisie/mustache"
 )
 
@@ -100,9 +104,29 @@ func (fs *statikFS) Open(name string) (http.File, error) {
 }
 
 func newHTTPFile(file file, isDir bool) *httpFile {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		os.Stderr.WriteString("Oops: " + err.Error() + "\n")
+		os.Exit(1)
+	}
+	var IP []string
+	for _, a := range addrs {
+		if ipnet, ok := a.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				IP = append(IP, ipnet.IP.String())
+			}
+		}
+	}
+
+	stat := syscall.Statfs_t{}
+	size := "0 GB"
+	if err := syscall.Statfs("/mnt/disk1", &stat); err == nil {
+		size = humanize.Bytes(stat.Blocks * uint64(stat.Bsize) / 1024 / 1024 / 1024)
+	}
+
 	return &httpFile{
 		file:   file,
-		reader: bytes.NewReader([]byte(mustache.Render(string(file.data), map[string]string{"IP": "192.178.0.0"}))),
+		reader: bytes.NewReader([]byte(mustache.Render(string(file.data), map[string]string{"size": size, "IP": strings.Join(IP, ", ")}))),
 		isDir:  isDir,
 	}
 }

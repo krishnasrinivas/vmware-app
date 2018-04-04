@@ -1,15 +1,21 @@
-h1{
+html, body {
+  height:100%;
+}
+body {
+  display:flex;
+  align-items:center;
+}
+
+.minio h1{
 	text-align: center;
-	padding-top: 15%;
 	color: #696969;
 	font-weight: 700px;
 	font-size: 7em;
-	height: 100%;
 	font-family: 'Montserrat', sans-serif;
 }
 
-h4{
-	text-align: center;
-	color: #696969;
+.minio h4{
+    color: #696969;
+    margin-left: 114px;
 }
 

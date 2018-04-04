@@ -6,7 +6,7 @@ import (
 
 	"github.com/rakyll/statik/fs"
 
-	_ "./statik" // TODO: Replace with the absolute import path
+	_ "github.com/krishnasrinivas/vmware-app/statik" // TODO: Replace with the absolute import path
 )
 
 func main() {
